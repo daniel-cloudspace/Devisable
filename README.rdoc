@@ -41,6 +41,7 @@ Runtime Options:
   -s, [--sudo]          # Use sudo for the gem install commands (for non rvm/osx users)
   -u, [--url]           # Rool url for your app in development
   -C, [--cucumber]      # Include cucumber tests, currently does not support oauth
+  -j, [--jslibrary]     # write out javascript partials using the jquery or prototype. will default to prototype if Rails.version < 3.1.x
   
 Devise Options (used with the -c command)
 

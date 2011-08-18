@@ -93,11 +93,12 @@ class DevisableGenerator < Rails::Generators::Base
         @@actual_configuration_options['cucumber'] = true
       end
       opts.on("-j", "--jslibrary (jquery|prototype)", String, "write out using the jquery or prototype libraries") do |j|
-        if j =~ /jquery/i
-          @@actual_configuration_options['jslibrary'] = 'jquery'
-        elsif j =~ /prototype/i
-          @@actual_configuration_options['jslibrary'] = 'prototype'
-        end
+        # otherwise use command lines options
+        lib = 'jquery' if j =~ /jquery/i
+        lib = 'prototype' if j =~ /prototype/i
+
+        @@actual_configuration_options['jslibrary'] = lib
+        puts "############### " + Rails.version + " " + version.inspect + " " + @@actual_configuration_options['jslibrary'] + " ###########"
       end
     end.parse!
     execute
@@ -408,6 +409,13 @@ class DevisableGenerator < Rails::Generators::Base
   
   #adds the javascript for the role permissions checkboxes
   def add_javascript
+    # if no jslibrary has been selected yet
+    if @@actual_configuration_options['jslibrary'] == ''
+      # if the version is >= 3.1.0, then jquery is the default. otherwise, prototype
+      version = Rails.version.split('.').collect{|t|t.to_i}
+      @@actual_configuration_options['jslibrary'] = (version[0] >= 3 && version[1] >= 1) ? 'jquery' : 'prototype'
+    end
+
     rep_str = load_erb_string('partials/_permission_manage_' + @@actual_configuration_options['jslibrary'] + '.js')
     append_to_file "public/javascripts/application.js", rep_str
   end
