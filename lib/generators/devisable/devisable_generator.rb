@@ -98,7 +98,6 @@ class DevisableGenerator < Rails::Generators::Base
         lib = 'prototype' if j =~ /prototype/i
 
         @@actual_configuration_options['jslibrary'] = lib
-        puts "############### " + Rails.version + " " + version.inspect + " " + @@actual_configuration_options['jslibrary'] + " ###########"
       end
     end.parse!
     execute
